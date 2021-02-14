@@ -64,6 +64,17 @@ img {
     width: 90%;
   }
 }
+
+#addImage{
+  position: absolute;
+  top: 100px;
+}
+#image-Box{
+  width: 200px;
+  height:400px;
+  overflow: scroll;
+}
+
 .selectImage{
   width: 20%;
   padding:10px;

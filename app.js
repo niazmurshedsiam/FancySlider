@@ -67,10 +67,11 @@ const createSlider = () => {
     return;
   }
   // crate slider previous next area
-  sliderContainer.innerHTML = '';
-  const prevNext = document.createElement('div');
-  prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
-  prevNext.innerHTML = ` 
+  sliderContainer.innerHTML = "";
+	const prevNext = document.createElement("div");
+	prevNext.className =
+		"prev-next d-flex w-100 justify-content-between align-items-center";
+	prevNext.innerHTML = ` 
   <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
   <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
   `;
@@ -79,8 +80,8 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const inputDuration = document.getElementById('duration').value || 1000;
-  inputDurationValue = 0;
+  const inputDuration = document.getElementById("duration").value;
+	inputDurationValue = 0;
 	if (inputDuration < 0) {
 		inputDurationValue = inputDuration * -1;
 	} else {
@@ -88,14 +89,14 @@ const createSlider = () => {
 	}
   selectImages();
   const duration = inputDurationValue || 1000;
-  sliders.forEach(slide => {
+  sliders.forEach((slide) => {
     let item = document.createElement('div')
     item.className = "slider-item";
     item.innerHTML = `<img class="w-100"
     src="${slide}"
     alt="">`;
-    sliderContainer.appendChild(item)
-  })
+    sliderContainer.appendChild(item);
+  });
   changeSlide(0)
   timer = setInterval(function () {
     slideIndex++;
@@ -122,7 +123,7 @@ const changeSlide = (index) => {
     slideIndex = 0;
   }
 
-  items.forEach(item => {
+  items.forEach((item) => {
     item.style.display = "none"
   })
 
@@ -137,11 +138,11 @@ searchBtn.addEventListener('click', function () {
   spinner();
   sliders.length = 0;
   
-})
+});
 
 sliderBtn.addEventListener('click', function () {
-  createSlider()
-})
+  createSlider();
+});
 var pressEnter = document.getElementById("search");
 pressEnter.addEventListener("keyup", function (event) {
 	if (event.key === "Enter") {
@@ -157,8 +158,6 @@ const spinner = () => {
 	spinnerData.toggle("d-block");
 };
 
-//Show select images:
-
 const selectImages = () => {
 	document.getElementById("Image-Box").innerText = "";
 
@@ -172,3 +171,6 @@ const selectImages = () => {
 		ImageBox.appendChild(selectImage);
 	});
 };
+
+
+

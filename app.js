@@ -15,23 +15,35 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
-  imagesArea.style.display = 'block';
-  gallery.innerHTML = '';
-  // show gallery title
-  galleryHeader.style.display = 'flex';
-  images.forEach(image => {
-    let div = document.createElement('div');
-    div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-    gallery.appendChild(div)
-  })
+	
+	gallery.innerHTML = "";
+	if (images == "") {
+		galleryHeader.style.display = "none";
+		document.getElementById("message").style.display = "block";
+		
+		spinner();
+	} else {
+		document.getElementById("message").style.display = "none";
 
-}
+		imagesArea.style.display = "block";
+
+		// show gallery title
+		galleryHeader.style.display = "flex";
+		images.forEach((image) => {
+			let div = document.createElement("div");
+			div.className = "col-lg-3 col-md-4 col-xs-6 img-item mb-2";
+			div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}" >`;
+			gallery.appendChild(div);
+		});
+		
+		spinner();
+	}
+};
 
 const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data => showImages(data.hitS))
+    .then(data => showImages(data.hits))
     .catch(err => console.log(err))
 }
 
@@ -47,7 +59,7 @@ const selectItem = (event, img) => {
     alert('Hey, Already added !')
   }
 }
-var timer
+var timer;
 const createSlider = () => {
   // check slider image length
   if (sliders.length < 2) {
@@ -67,7 +79,15 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('duration').value || 1000;
+  const inputDuration = document.getElementById('duration').value || 1000;
+  inputDurationValue = 0;
+	if (inputDuration < 0) {
+		inputDurationValue = inputDuration * -1;
+	} else {
+		inputDurationValue = inputDuration;
+	}
+  selectImages();
+  const duration = inputDurationValue || 1000;
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
@@ -113,10 +133,42 @@ searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search');
-  getImages(search.value)
+  getImages(search.value);
+  spinner();
   sliders.length = 0;
+  
 })
 
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
+var pressEnter = document.getElementById("search");
+pressEnter.addEventListener("keyup", function (event) {
+	if (event.key === "Enter") {
+		event.preventDefault();
+		searchBtn.click();
+	}
+});
+
+// Spinner:
+
+const spinner = () => {
+	let spinnerData = document.getElementById("loadingSpinner").classList;
+	spinnerData.toggle("d-block");
+};
+
+//Show select images:
+
+const selectImages = () => {
+	document.getElementById("Image-Box").innerText = "";
+
+	const ImageBox = document.getElementById("Image-Box");
+
+	sliders.forEach((image) => {
+		let selectImage = document.createElement("div");
+		selectImage.className = "selectImage";
+		selectImage.innerHTML = `<img src="${image}">`;
+
+		ImageBox.appendChild(selectImage);
+	});
+};
